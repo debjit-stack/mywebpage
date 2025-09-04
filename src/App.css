@@ -1,0 +1,134 @@
+@import "tailwindcss/preflight";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* CSS Variables for Theming */
+:root {
+    --color-bg: #18181b; /* zinc-900 */
+    --color-surface-primary: #27272a; /* zinc-800 */
+    --color-surface-secondary: #3f3f46; /* zinc-700 */
+    --color-border: #52525b; /* zinc-600 */
+    --color-text-heading: #f4f4f5; /* zinc-100 */
+    --color-text-body: #d4d4d8; /* zinc-300 */
+    --color-text-accent: #5eead4;
+    --color-accent-bg-hover: rgba(94, 234, 212, 0.1);
+}
+
+html.light {
+    --color-bg: #fdfaf0; /* Yellowish white */
+    --color-surface-primary: #ffffff;
+    --color-surface-secondary: #f9fafb;
+    --color-border: #e5e7eb;
+    --color-text-heading: #1f2937;
+    --color-text-body: #374151;
+    --color-text-accent: #0d9488;
+    --color-accent-bg-hover: rgba(13, 148, 136, 0.1);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text-body);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    counter-reset: section;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: 2.5rem;
+    width: 100%;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text-heading);
+}
+
+.section-heading::after {
+    content: "";
+    display: block;
+    position: relative;
+    top: 2px;
+    width: 300px;
+    height: 1px;
+    margin-left: 20px;
+    background-color: var(--color-surface-secondary);
+}
+
+.numbered-heading::before {
+    position: relative;
+    bottom: 2px;
+    counter-increment: section;
+    content: "0" counter(section) ".";
+    margin-right: 10px;
+    color: var(--color-text-accent);
+    font-family: monospace;
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.glass-card {
+    background-color: var(--color-surface-primary);
+    border: 1px solid var(--color-border);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7);
+}
+
+html.light .glass-card {
+     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+}
+
+.glass-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 30px -15px rgba(2,12,27,0.7);
+    border-color: var(--color-text-accent);
+}
+
+html.light .glass-card:hover {
+     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.07), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+     border-color: var(--color-text-accent);
+}
+
+@keyframes move-stars {
+    from { background-position: 0 0; }
+    to { background-position: 0 -10000px; }
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+html:not(.light) body::before {
+    opacity: 1;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><circle fill="%23fff" cx="20" cy="50" r="1" opacity="0.4"/><circle fill="%23fff" cx="150" cy="80" r="1" opacity="0.4"/><circle fill="%23fff" cx="80" cy="180" r="1" opacity="0.4"/><circle fill="%23fff" cx="180" cy="20" r="1" opacity="0.4"/><circle fill="%23fff" cx="350" cy="150" r="1" opacity="0.4"/><circle fill="%23fff" cx="250" cy="350" r="1" opacity="0.4"/><circle fill="%23fff" cx="300" cy="250" r="2" opacity="0.2"/><circle fill="%23fff" cx="100" cy="300" r="2" opacity="0.2"/></svg>');
+    animation: move-stars 300s linear infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.typing-indicator span {
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-text-body);
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: bounce 1s infinite;
+}
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
