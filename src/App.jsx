@@ -65,7 +65,7 @@ const Header = ({ onChatbotToggle, isChatbotOpen }) => {
 
     const toggleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light');
 
-    const resumeLink = "/Debjit_mernstack_MAIN.pdf";
+    const resumeLink = "/Debjit_Resume.pdf";
 
     return (
         <nav id="navbar" className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'scrolled' : ''}`}>
