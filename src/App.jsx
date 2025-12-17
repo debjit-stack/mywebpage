@@ -3,6 +3,10 @@ import {
     Moon, Sun, Bot, Menu, Github, Linkedin, Code as CodeIcon, ExternalLink, X,
     ChevronRight, Send, Trash2, Download
 } from 'lucide-react';
+// Use Vite's raw import feature for JSON to bypass potential resolver issues
+import jsonData from './data.json?raw';
+const portfolioData = JSON.parse(jsonData);
+
 
 // --- Reusable Components ---
 
@@ -125,7 +129,7 @@ const Hero = () => (
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-[var(--color-text-heading)]">Debjit Ghosh.</h1>
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-[var(--color-text-body)] mt-2">I build intelligent web solutions.</h2>
             <p className="mt-6 max-w-xl text-base sm:text-lg">
-                I'm a Full Stack Developer specializing in fusing scalable backend architecture with AI-driven features. Currently, I’m focused on building accessible, human-centered products and pushing the boundaries of what's possible on the web.
+                I'm a Full Stack Developer specializing in fusing scalable backend architecture with AI-driven features. Currently, I'm focused on building accessible, human-centered products and pushing the boundaries of what's possible on the web.
             </p>
             <a href="mailto:deb.sh02@gmail.com" className="inline-block mt-12 text-[var(--color-text-accent)] border border-[var(--color-text-accent)] px-8 py-4 rounded-md font-mono text-base sm:text-lg hover:bg-[var(--color-accent-bg-hover)] transition-colors">
                 Get In Touch
@@ -134,17 +138,17 @@ const Hero = () => (
     </section>
 );
 
-const About = () => (
+const About = ({ about }) => (
      <section id="about" className="py-24">
         <SectionHeading number="1">About Me</SectionHeading>
         <div className="grid md:grid-cols-5 gap-12 items-center">
             <div className="md:col-span-3 text-lg space-y-4">
-                <p>Hello! I'm Debjit. My fascination with technology began not with code, but with circuits and systems during my Electrical Engineering studies. This foundation in logical problem-solving naturally led me to the world of software development, where I discovered a passion for building dynamic and intelligent applications.</p>
-                <p>Today, I have over a year of experience creating robust solutions with the <span className="text-[var(--color-text-accent)]">MERN stack</span>. I thrive on the challenge of integrating complex technologies like <span className="text-[var(--color-text-accent)]">Generative AI</span> to create seamless, intuitive user experiences. My goal is to not just write code, but to engineer solutions that are efficient, scalable, and impactful.</p>
-                <p>Here are a few technologies I’ve been working with recently:</p>
+                <p>{about.description_p1}</p>
+                <p>{about.description_p2}</p>
+                <p>Here are a few technologies I've been working with recently:</p>
                 <ul className="grid grid-cols-2 gap-2 font-mono text-sm">
-                    {["JavaScript (ES6+)", "TypeScript", "React & Next.js", "Node.js", "MongoDB", "AWS"].map(tech => (
-                         <li key={tech} className="flex items-center"><ChevronRight className="w-4 h-4 text-[var(--color-text-accent)]"/>{tech}</li>
+                    {about.skills.map(tech => (
+                         <li key={tech} className="flex items-center" key1={tech}><ChevronRight className="w-4 h-4 text-[var(--color-text-accent)]"/>{tech}</li>
                     ))}
                 </ul>
             </div>
@@ -158,57 +162,56 @@ const About = () => (
     </section>
 );
 
-const Experience = () => (
-    <section id="experience" className="py-24">
-        <SectionHeading number="2">Where I've Worked</SectionHeading>
-        <GlassCard className="p-6 md:p-8 rounded-lg">
-            <h3 className="text-xl md:text-2xl font-bold text-[var(--color-text-heading)]">Analyst <span className="text-[var(--color-text-accent)]">@ Virtusa Consulting</span></h3>
-            <p className="font-mono my-2 text-sm">March 2024 - Present</p>
+const ExperienceCard = ({ job, align }) => {
+    const isLeftAligned = align === 'left';
+
+    const companySide = (
+        <div className={isLeftAligned ? 'md:text-left' : 'md:text-right'}>
+             <h3 className="text-xl font-bold text-[var(--color-text-accent)]">
+                @ {job.company}
+            </h3>
+            <p className="font-mono my-2 text-sm">{job.period}</p>
+        </div>
+    );
+
+    const detailsSide = (
+         <GlassCard className="p-6 md:p-8 rounded-lg">
+            <h3 className="text-xl md:text-2xl font-bold text-[var(--color-text-heading)]">{job.title}</h3>
             <ul className="list-disc list-inside space-y-3 mt-4 text-base md:text-lg">
-                <li>Engineered GenAI image moderation systems for Google, significantly improving system accuracy through rigorous data analysis and pattern recognition.</li>
-                <li>Collaborated in an agile environment with cross-functional teams to optimize business processes, achieving a 15% boost in operational efficiency.</li>
-                <li>Maintained a consistent 100% accuracy rate in high-volume QA tasks, processing over 1000 data points daily.</li>
+                {job.details.map((detail, i) => <li key={i}>{detail}</li>)}
             </ul>
         </GlassCard>
+    );
+
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-12 md:gap-8 items-start mb-16">
+             <div className={`md:col-span-4 ${isLeftAligned ? 'md:order-first' : 'md:order-last'}`}>
+                 {companySide}
+             </div>
+             <div className="md:col-span-8">
+                 {detailsSide}
+             </div>
+        </div>
+    );
+};
+
+const Experience = ({ experience }) => (
+    <section id="experience" className="py-24">
+        <SectionHeading number="2">Where I've Worked</SectionHeading>
+         <div className="space-y-12">
+            {experience.map((job, i) => (
+                <ExperienceCard key={job.company} job={job} align={i % 2 === 0 ? 'left' : 'right'} />
+            ))}
+        </div>
     </section>
 );
 
-const Projects = () => {
-    const projectData = [
-        {
-            title: "AI Content Summarizer",
-            image: "/aicontent.png",
-            description: "A scalable web app using the Google Gemini API for intelligent text summarization. Features a responsive UI, customizable length options, and persistent history with MongoDB.",
-            tags: ["React", "Node.js", "MongoDB", "Gemini API", "Tailwind CSS"],
-            github: "https://github.com/debjit-stack/Ai-Content-Summarizer",
-            live: "https://concise-content.vercel.app/",
-            align: 'right'
-        },
-        {
-            title: "CareConnect Healthcare",
-            image: "/careconnect.png",
-            description: "A comprehensive healthcare platform with role-based access control. Implemented secure JWT authentication and an automated appointment booking and notification system.",
-            tags: ["MERN Stack", "JWT Auth", "Context API"],
-            github: "https://github.com/debjit-stack/care-connect",
-            live: "https://ccmanagement.netlify.app/",
-            align: 'left'
-        },
-        {
-            title: "AudioInsights AI Analysis",
-            image: null,
-            description: "A Chrome extension for audio capture from browser tabs with real-time analysis, using AssemblyAI for transcription and Gemini API for comprehensive content insights.",
-            tags: ["Chrome Extension", "AssemblyAI", "Gemini API"],
-            github: "https://github.com/debjit-stack/AudioInsights",
-            live: null,
-            align: 'right'
-        },
-    ];
-
+const Projects = ({ projects }) => {
     return (
          <section id="projects" className="py-24">
             <SectionHeading number="3">Things I've Built</SectionHeading>
             <div className="space-y-20">
-                {projectData.map(p => <ProjectCard key={p.title} {...p} />)}
+                {projects.map(p => <ProjectCard key={p.title} {...p} />)}
             </div>
         </section>
     );
@@ -305,7 +308,7 @@ const SideBars = () => (
     </>
 );
 
-const Chatbot = ({ isChatbotOpen, onChatbotToggle }) => {
+const Chatbot = ({ isChatbotOpen, onChatbotToggle, portfolioContext }) => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [isTyping, setIsTyping] = useState(false);
@@ -319,24 +322,18 @@ const Chatbot = ({ isChatbotOpen, onChatbotToggle }) => {
 
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
-    const RESUME_DATA = `
-    DEBJIT GHOSH - Full Stack Developer | MERN Stack Specialist - Email: deb.sh02@gmail.com, Phone: +91 8509060187, Links: LinkedIn (linkedin.com/in/debjit-ghosh007/), GitHub (github.com/debjit-stack), LeetCode (leetcode.com/u/debjit7)
-    PROFESSIONAL SUMMARY: Full Stack Developer with over 1 year of experience in the MERN stack and JavaScript technologies. Expertise in scalable web applications, AI integration, and user-focused solutions. Proven ability to improve operational efficiency by 15% through GenAI implementation and cross-functional collaboration.
-    TECHNICAL SKILLS: JavaScript ES6+, TypeScript, React.js, Next.js, HTML5, CSS3, Tailwind CSS, Redux Toolkit, Node.js, Express.js, RESTful APIs, JWT Authentication, Microservices, MongoDB, MySQL, AWS (EC2, S3, Lambda), Docker, Git, GitHub, CI/CD, Vercel, Render.
-    KEY PROJECTS: 1. AI Content Summarizer (React, Node, MongoDB, Gemini API): Scalable web app for intelligent text summarization. 2. CareConnect Healthcare (MERN, JWT): Healthcare platform with role-based access. 3. AudioInsights AI (Chrome Extension, AssemblyAI, Gemini API): Chrome extension for audio capture and analysis.
-    PROFESSIONAL EXPERIENCE: Analyst @ Virtusa (March 2024 - Present): Developed GenAI image moderation systems for Google, improving system accuracy. Optimized business processes, improving efficiency by 15%.
-    EDUCATION: B.Tech - Electrical Engineering, Academy of Technology (CGPA: 8.87/10), 2019-2023.
-    `;
-
     const systemPrompt = `You are DG-AI, a smart, professional, and friendly AI assistant representing Debjit Ghosh. Your primary role is to engage with potential employers and collaborators by providing helpful information based *exclusively* on the professional details provided below.
+
+**CONTEXT:**
+${portfolioContext}
 
 **Core Directives:**
 
 1.  **Natural Conversation:** Communicate in a helpful, conversational tone. Avoid sounding robotic or repetitive. **Do not use the word "resume"**. Instead, refer to the information you have with phrases like, "Based on his profile...", "I can see that...", or "The information I have shows...".
 
-2.  **Be Proactively Helpful:** If a user asks a broad question like "Can I get his professional summary?", don't just ask for specifics. Proactively provide a concise summary of his key skills, latest role, and technical expertise.
+2.  **Be Proactively Helpful:** If a user asks a broad question like "Can I get his professional summary?", don't just ask for specifics. Proactively provide a concise summary of his key skills, latest role, and technical expertise based on the context.
 
-3.  **Intelligent Redirection:** When asked a question you can't directly answer from the data (e.g., subjective questions like "Is he a good coder?"), don't simply refuse. Instead, pivot to relevant, factual information. For example, you could say: "While I can't speak to his personal style, his projects demonstrate strong capabilities in technologies like React and Node.js. For instance, in his AI Content Summarizer, he integrated the Gemini API to build a scalable application."
+3.  **Intelligent Redirection:** When asked a question you can't directly answer from the data (e.g., subjective questions like "Is he a good coder?"), don't simply refuse. Instead, pivot to relevant, factual information from the context. For example, you could say: "While I can't speak to his personal style, his projects demonstrate strong capabilities in technologies like React and Node.js. For instance, in his AI Content Summarizer, he integrated the Gemini API to build a scalable application."
 
 4.  **Stay On-Topic:** If a user asks a completely unrelated question (e.g., "What's the weather like?"), politely steer the conversation back to Debjit's professional profile. A good response would be: "I'm focused on providing information about Debjit's professional background. I'd be happy to tell you about the technologies he uses or the projects he's built."
 
@@ -350,7 +347,8 @@ const Chatbot = ({ isChatbotOpen, onChatbotToggle }) => {
              setIsTyping(false);
              return;
         }
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+        //const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
         const payload = {
             contents: [{ parts: [{ text: userMessage }] }],
             systemInstruction: { parts: [{ text: systemPrompt }] },
@@ -431,21 +429,42 @@ export default function App() {
         setIsChatbotOpen(prev => !prev);
     };
 
+    const generatePortfolioContext = (data) => {
+        const about = `ABOUT ME: ${data.about.description_p1} ${data.about.description_p2}`;
+        const skills = `TECHNICAL SKILLS: ${data.about.skills.join(', ')}.`;
+        const experience = `PROFESSIONAL EXPERIENCE: ${data.experience.map(job =>
+            `${job.title} @ ${job.company} (${job.period}): ${job.details.join(' ')}`
+        ).join(' | ')}`;
+        const projects = `KEY PROJECTS: ${data.projects.map((p, i) =>
+            `${i + 1}. ${p.title}: ${p.description}`
+        ).join(' ')}`;
+
+        return `
+            DEBJIT GHOSH - Full Stack Developer | MERN Stack Specialist
+            ${about}
+            ${skills}
+            ${experience}
+            ${projects}
+        `;
+    };
+
+    const portfolioContext = generatePortfolioContext(portfolioData);
+
     return (
         <>
             <Header onChatbotToggle={toggleChatbot} isChatbotOpen={isChatbotOpen} />
             <div className="max-w-4xl mx-auto px-4 sm:px-6">
                 <main>
                     <Hero />
-                    <About />
-                    <Experience />
-                    <Projects />
+                    <About about={portfolioData.about} />
+                    <Experience experience={portfolioData.experience} />
+                    <Projects projects={portfolioData.projects} />
                     <Contact />
                 </main>
             </div>
             <Footer />
             <SideBars />
-            <Chatbot onChatbotToggle={toggleChatbot} isChatbotOpen={isChatbotOpen} />
+            <Chatbot onChatbotToggle={toggleChatbot} isChatbotOpen={isChatbotOpen} portfolioContext={portfolioContext} />
         </>
     );
 }

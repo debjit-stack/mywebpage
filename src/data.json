@@ -1,0 +1,65 @@
+{
+  "about": {
+    "description_p1": "Hello! I'm Debjit. My fascination with technology began not with code, but with circuits and systems during my Electrical Engineering studies. This foundation in logical problem-solving naturally led me to the world of software development, where I discovered a passion for building dynamic and intelligent applications.",
+    "description_p2": "Today, I have over a year of experience creating robust solutions with the MERN stack. I thrive on the challenge of integrating complex technologies like Generative AI to create seamless, intuitive user experiences. My goal is to not just write code, but to engineer solutions that are efficient, scalable, and impactful.",
+    "skills": [
+      "JavaScript (ES6+)",
+      "TypeScript",
+      "React & Next.js",
+      "Node.js",
+      "MongoDB",
+      "AWS"
+    ]
+  },
+  "experience": [
+    {
+      "title": "Software Developer",
+      "company": "KGFM media",
+      "period": "October 2024 - Present",
+      "details": [
+        "Developed a full-stack web application using the MERN stack, enhancing user engagement by 20% through improved UI/UX design.",
+        "Implemented RESTful APIs and integrated third-party services, reducing data retrieval times by 30%.",
+        "Collaborated with a team of 5 developers in an agile environment, contributing to sprint planning and code reviews."
+      ]
+    }
+  ],
+  
+  "projects": [
+    {
+      "title": "AI Content Summarizer",
+      "image": "/aicontent.png",
+      "description": "A scalable web app using the Google Gemini API for intelligent text summarization. Features a responsive UI, customizable length options, and persistent history with MongoDB.",
+      "tags": ["React", "Node.js", "MongoDB", "Gemini API", "Tailwind CSS"],
+      "github": "https://github.com/debjit-stack/Ai-Content-Summarizer",
+      "live": "https://concise-content.vercel.app/",
+      "align": "right"
+    },
+    {
+      "title": "CareConnect Healthcare",
+      "image": "/careconnect.png",
+      "description": "A comprehensive healthcare platform with role-based access control. Implemented secure JWT authentication and an automated appointment booking and notification system.",
+      "tags": ["MERN Stack", "JWT Auth", "Context API"],
+      "github": "https://github.com/debjit-stack/care-connect",
+      "live": "https://ccmanagement.netlify.app/",
+      "align": "left"
+    },
+    {
+      "title": "AudioInsights AI Analysis",
+      "image": null,
+      "description": "A Chrome extension for audio capture from browser tabs with real-time analysis, using AssemblyAI for transcription and Gemini API for comprehensive content insights.",
+      "tags": ["Chrome Extension", "AssemblyAI", "Gemini API"],
+      "github": "https://github.com/debjit-stack/AudioInsights",
+      "live": null,
+      "align": "right"
+    },
+    {
+    "title": "AI Recipe Remixer",
+    "image": "/airecipe.png",
+    "description": "A full-stack AI-powered recipe generator that creates unique dishes from leftover ingredients. Uses Google Gemini API for text-based recipes and Stability AI for photorealistic food images, with user authentication, recipe history, and MongoDB Atlas storage.",
+    "tags": ["React", "Node.js", "Express", "MongoDB Atlas", "Google Gemini API", "Stability AI"],
+    "github": "https://github.com/debjit-stack/airecipe",
+    "live": "https://smart-ai-chef.vercel.app/",
+    "align": "left"
+    }
+  ]
+}
